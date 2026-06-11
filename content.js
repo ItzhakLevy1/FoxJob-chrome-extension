@@ -7,6 +7,7 @@
   const textSpan = document.createElement("span");
   const messageHTML = `
     <div>
+    <br>
       🟢 תוסף סימון המשרות של ScaleFox פעיל.
       <hr>
       המשרות שהגשת אליהן מועמדות (בלחיצה על Apply) יסומנו בירוק.
