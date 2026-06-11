@@ -1,0 +1,62 @@
+.applied-job {
+  border: 3px solid #4caf50 !important;
+  background-color: #d4edda !important; /* Green tint */
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px; /* Matches the rounded-2xl of the site */
+}
+
+/* The visual badge */
+.applied-job::after {
+  color: #22c55e;
+  content: "✅ Applied";
+  position: absolute;
+  top: 10px;
+  right: 60px; /* Adjusted so it doesn't overlap the bookmark icon */
+  font-size: 16px;
+  font-weight: bolder;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid #22c55e;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/******************** The extension message indicating that the extension is working ********************/
+.my-extension-banner {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  z-index: 999999;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.my-extension-close {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+.my-extension-close:hover {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  transform: scale(1.3);
+}
