@@ -9,8 +9,15 @@
     <div>
     <br>
       🟢 תוסף סימון המשרות של ScaleFox פעיל.
+      <br>
       <hr>
-      המשרות שהגשת אליהן מועמדות (בלחיצה על Apply) יסומנו בירוק.
+      <br>
+      משרות שהוגשו מסומנות בירוק.
+      <br>
+      <hr>
+      <br>
+      משרות של 3+ שנות ניסיון מוסתרות אוטומטית.
+      <br>
     </div>
   `;
 
@@ -46,15 +53,38 @@
     // Get applied jobs from localStorage
     const appliedJobIds = JSON.parse(localStorage.getItem("scalefox_applied_jobs") || "[]");
 
+    // Regex to match experience numbers (e.g., "6+ yrs", "3 yrs", "10+ years")
+    const expRegex = /(\d+)\s*(?:\+)?\s*yr[s]?/i;
+
     jobLinks.forEach((link) => {
       const jobId = extractJobId(link.getAttribute("href"));
       const jobCard = link.closest(".group.relative"); // The main container div
 
       if (jobCard) {
-        if (jobId && appliedJobIds.includes(jobId)) {
-          jobCard.classList.add("applied-job");
+        const cardText = jobCard.innerText;
+        let shouldHide = false;
+
+        // Check experience requirement
+        const match = cardText.match(expRegex);
+        if (match) {
+          const yearsOfExperience = parseInt(match[1], 10);
+          if (yearsOfExperience >= 3) {
+            shouldHide = true;
+          }
+        }
+
+        // Apply filtering or marking based on status
+        if (shouldHide) {
+          jobCard.style.display = "none";
         } else {
-          jobCard.classList.remove("applied-job");
+          jobCard.style.display = ""; // Reset to default layout if visible
+          
+          // Apply green class if already applied
+          if (jobId && appliedJobIds.includes(jobId)) {
+            jobCard.classList.add("applied-job");
+          } else {
+            jobCard.classList.remove("applied-job");
+          }
         }
       }
     });
@@ -62,8 +92,6 @@
 
   // 3. Global Click Listener
   document.addEventListener("click", (event) => {
-    // Strategy A (Preferred): Target the "Apply" button inside the job page
-    // We check if the clicked element (or its text) contains "Apply"
     const target = event.target;
     const isApplyButton = target.tagName === "BUTTON" || target.tagName === "A";
     
@@ -78,19 +106,7 @@
           filterAndMarkJobs(); // Refresh visual state
         }
       }
-      return;
     }
-
-    // Strategy B (Fallback): If you clicked a job card on the main screen, 
-    // and you want a fallback option, we can track that too.
-    // (Uncomment the lines below if you want to mark on main card click as well)
-    /*
-    const jobLink = target.closest('a[href^="/jobs/"]');
-    if (jobLink) {
-      const jobId = extractJobId(jobLink.getAttribute("href"));
-      // alternative handling...
-    }
-    */
   });
 
   // 4. Optimized Observer (Throttled for dynamic loading)
